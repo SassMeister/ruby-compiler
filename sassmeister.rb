@@ -9,13 +9,13 @@ require 'json'
 require 'sass'
 require 'compass'
 require 'yaml'
-require 'sassmeister'
+require 'sassmeister_utilities'
 require 'benchmark'
 
 # require 'pry-remote'
 
 class SassMeisterApp < Sinatra::Base
-  helpers SassMeister
+  helpers SassMeisterUtilities
 
   configure :production do
     require 'newrelic_rpm'
