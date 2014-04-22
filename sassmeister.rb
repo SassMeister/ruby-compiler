@@ -76,8 +76,17 @@ class SassMeisterApp < Sinatra::Base
     }.to_json.to_s
   end
 
-  get '/extensions' do
-    send_file File.join(settings.public_folder, 'extensions.html')
+  get %r{/([\w]+)/(css|text)} do |path, ext|
+    send_file File.join(settings.public_folder, "#{path}.#{ext}")
+  end
+
+  get %r{/([\w]+)} do |path|
+    send_file File.join(settings.public_folder, "#{path}.html")
+  end
+
+  get '/' do
+    status, headers, body = call env.merge("PATH_INFO" => '/index')
+    [status, headers, body]
   end
 
   run! if app_file == $0
