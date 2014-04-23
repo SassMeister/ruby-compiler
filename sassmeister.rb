@@ -84,10 +84,5 @@ class SassMeisterApp < Sinatra::Base
     send_file File.join(settings.public_folder, "#{path}.html")
   end
 
-  get '/' do
-    status, headers, body = call env.merge("PATH_INFO" => '/index')
-    [status, headers, body]
-  end
-
   run! if app_file == $0
 end

@@ -29,16 +29,16 @@ class AppTest < MiniTest::Spec
       end
     end
 
-    describe "GET /extensions" do
-      before do
-        get "/extensions"
-      end
+    # describe "GET /extensions" do
+    #   before do
+    #     get "/extensions"
+    #   end
 
-      it "responds with extension list HTML" do
-        file = File.read(File.join(app.settings.public_folder, 'extensions.html')).to_s
-        assert_equal last_response.body, file
-      end
-    end
+    #   it "responds with extension list HTML" do
+    #     file = File.read(File.join(app.settings.public_folder, 'extensions.html')).to_s
+    #     assert_equal last_response.body, file
+    #   end
+    # end
 
     describe "POST /compile" do
       before do
@@ -66,7 +66,7 @@ class AppTest < MiniTest::Spec
 
 
   describe "Extensions" do
-    plugins = YAML.load_file(File.expand_path '../../config/plugins.yml', __FILE__)
+    plugins = YAML.load_file('config/plugins.yml')
 
     plugins.each do |plugin, info|
       describe "Sass input with #{plugin} selected" do
@@ -79,7 +79,6 @@ class AppTest < MiniTest::Spec
         end
       end
     end
-
   end
 
 end
