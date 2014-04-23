@@ -71,9 +71,3 @@ task "update" do
 
   utilities.update_plugin_list('public/extensions.html', sass_input_list)
 end
-
-
-require 'rake/testtask'
-Rake::TestTask.new do |t|
-  t.pattern = "spec/*_spec.rb"
-end
