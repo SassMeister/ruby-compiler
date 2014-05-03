@@ -76,12 +76,12 @@ class SassMeisterApp < Sinatra::Base
     }.to_json.to_s
   end
 
-  get %r{/([\w]+)/(css|text)} do |path, ext|
-    send_file File.join(settings.public_folder, "#{path}.#{ext}")
+  get '/extensions' do
+    send_file File.join(settings.host_public_folder, "extensions.html")
   end
 
-  get %r{/([\w]+)} do |path|
-    send_file File.join(settings.public_folder, "#{path}.html")
+  get %r{/([\w]+)/(css|text)} do |path, ext|
+    send_file File.join(settings.public_folder, "#{path}.#{ext}")
   end
 
   run! if app_file == $0
