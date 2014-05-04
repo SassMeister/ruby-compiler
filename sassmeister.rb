@@ -77,7 +77,7 @@ class SassMeisterApp < Sinatra::Base
   end
 
   get '/extensions' do
-    send_file File.join(settings.host_public_folder, "extensions.html")
+    send_file File.join(Dir.pwd, 'public', 'extensions.html')
   end
 
   get %r{/([\w]+)/(css|text)} do |path, ext|
