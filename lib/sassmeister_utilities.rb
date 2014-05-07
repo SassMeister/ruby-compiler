@@ -1,6 +1,6 @@
 module SassMeisterUtilities
   def plugins
-    @plugnins ||= YAML.load_file("config/plugins.yml")
+    @plugins ||= YAML.load_file("config/plugins.yml")
   end
 
 
