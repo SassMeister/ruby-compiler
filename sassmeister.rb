@@ -7,14 +7,9 @@ require 'bundler'
 Bundler.setup(:default, :application, ENV['RACK_ENV'])
 
 require 'sinatra/base'
-require 'json'
-require 'sass'
-require 'compass'
-require 'yaml'
 require 'sassmeister_utilities'
+require 'yaml'
 require 'benchmark'
-
-# require 'pry-remote'
 
 class SassMeisterApp < Sinatra::Base
   helpers SassMeisterUtilities

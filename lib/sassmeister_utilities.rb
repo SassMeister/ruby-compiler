@@ -1,3 +1,7 @@
+require 'yaml'
+require 'sass'
+require 'compass'
+
 module SassMeisterUtilities
   def plugins
     @plugins ||= YAML.load_file("config/plugins.yml")
