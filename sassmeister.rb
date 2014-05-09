@@ -1,4 +1,6 @@
 $LOAD_PATH.unshift(File.join(File.dirname(File.realpath(__FILE__)), 'lib'))
+$LOAD_PATH.unshift(File.join(Dir.pwd, 'lib'))
+
 
 require 'rubygems'
 require 'bundler'
