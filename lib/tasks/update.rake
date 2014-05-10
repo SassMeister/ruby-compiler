@@ -6,26 +6,14 @@ task "update" do
 
   class Utilities < Thor
     include Thor::Actions
-
-    no_tasks do
-      def append(file, string)
-        gsub_file file, /^(gem .+?)(gem .+?)+$/, '\1' + "\n" + '\2'
-        append_file file, string, {:verbose => false}
-        gsub_file file, /^(gem .+?)(gem .+?)+$/, '\1' + "\n" + '\2'
-      end
-
-      def update_plugin_list(file, list)
-        gsub_file file, /<ol>\s*(<li>.+?<\/li>\s*)+<\/ol>/, "<ol>\n    #{list.join("\n    ")}\n  </ol>"
-      end
-    end
   end
 
   utilities = Utilities.new
 
   plugins = YAML.load_file("config/plugins.yml")
   gemfile = File.new('Gemfile').read
-  sass_input_list = []
   new_specs = []
+  extensions = {}
 
   plugins.each do |plugin, info|
     if ! gemfile.match(/^\s*gem '#{info[:gem]}'/) && !info[:gem].nil?
@@ -57,19 +45,27 @@ task "update" do
   plugins.sort.each do |plugin, info|
     if info[:gem]
       version = stdout.scan(/#{info[:gem]} (.+)/)[0][0].to_s
+      homepage = Gem.loaded_specs[info[:gem]].homepage
+      extensions[plugin] = {gem: info[:gem]}
     else
       version = `bower info #{info[:bower]} version -jq`.chomp!
       version.gsub!(/"/, '') unless version.nil?
 
+      homepage = `bower info #{info[:bower]} homepage -jq`.chomp!
+      homepage.gsub!(/"/, '') unless homepage.nil?
+
       if version.nil?
         version = JSON.parse(File.read("lib/sass_modules/#{info[:bower]}/.bower.json"))["_release"]
       end
+
+      extensions[plugin] = {bower: info[:bower], paths: info[:paths]}
     end
 
-    sass_input_list.push "<li><a data-import=\"#{info[:import].to_s.gsub(/(\"|\[|\]|\s*)/, '')}\">#{plugin}</a>&nbsp;&nbsp;(v#{version})</li>"
+    extensions[plugin].merge!({version: version, import: info[:import], fingerprint: info[:fingerprint], homepage: homepage})
+
   end
 
-  utilities.update_plugin_list('public/extensions.html', sass_input_list)
+  utilities.create_file 'config/extensions.yml', extensions.to_yaml.to_s, {force: true}
 end
 
 

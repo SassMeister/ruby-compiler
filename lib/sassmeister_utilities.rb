@@ -4,7 +4,7 @@ require 'compass'
 
 module SassMeisterUtilities
   def plugins
-    @plugins ||= YAML.load_file("config/plugins.yml")
+    @plugins ||= YAML.load_file("config/extensions.yml")
   end
 
 
