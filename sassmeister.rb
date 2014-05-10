@@ -77,7 +77,7 @@ class SassMeisterApp < Sinatra::Base
     content_type 'application/json'
 
     list = plugins.merge(plugins) do |plugin, info| 
-      info.reject {|key, value| key.to_s.match(/gem|bower|paths/)  }
+      info.reject {|key, value| key.to_s.match(/gem|bower|paths|fingerprint/)  }
     end
 
     list.to_json.to_s
