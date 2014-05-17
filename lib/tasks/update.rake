@@ -40,8 +40,6 @@ task "update" do
     raise
   end
 
-  Rake::Task["test"].invoke
-
   plugins.sort.each do |plugin, info|
     if info[:gem]
       version = stdout.scan(/#{info[:gem]} (.+)/)[0][0].to_s
@@ -66,6 +64,8 @@ task "update" do
   end
 
   utilities.create_file 'config/extensions.yml', extensions.to_yaml.to_s, {force: true}
+
+  Rake::Task["test"].invoke
 end
 
 
