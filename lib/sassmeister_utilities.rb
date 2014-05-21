@@ -1,6 +1,7 @@
 require 'yaml'
 require 'sass'
 require 'compass'
+require 'logger'
 
 module SassMeisterUtilities
   def plugins
@@ -9,10 +10,14 @@ module SassMeisterUtilities
 
 
   def require_plugins(sass)
-    local_paths = ["lib/sass_modules/"]
+    Sass.load_paths << "lib/sass_modules/"
+
+    local_paths = []
+    log_strings = []
 
     get_imports_from_sass(sass) do |name, plugin| 
       if plugin[:gem]
+        log_strings << "Gem: #{plugin[:gem]}"
         require plugin[:gem]
 
       elsif plugin[:bower]
@@ -33,6 +38,11 @@ module SassMeisterUtilities
     local_paths.each do |path|
       Sass.load_paths << path
     end
+
+    Sass.load_paths.uniq!
+
+    log = Logger.new(STDOUT)
+    log.info(log_strings.join("\n"))
   end
 
 
