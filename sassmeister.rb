@@ -76,13 +76,13 @@ class SassMeisterApp < Sinatra::Base
   get '/extensions' do
     content_type 'application/json'
 
-    list = plugins.merge(plugins) do |plugin, info| 
+    list = plugins.merge(plugins) do |plugin, info|
       info.reject {|key, value| key.to_s.match(/gem|bower|paths|fingerprint/)  }
     end
 
     list.to_json.to_s
   end
-  
+
   get %r{/([\w]+)/(css|text)} do |path, ext|
     send_file File.join(settings.public_folder, "#{path}.#{ext}")
   end

@@ -9,16 +9,16 @@ module SassMeisterUtilities
 
 
   def require_plugins(sass)
-    local_paths = ["lib/sass_modules/"]
+    load_paths = ["lib/sass_modules/"]
 
-    get_imports_from_sass(sass) do |name, plugin| 
+    get_imports_from_sass(sass) do |name, plugin|
       if plugin[:gem]
         require plugin[:gem]
 
       elsif plugin[:bower]
         if plugin[:paths] && plugin[:paths].any?
-          plugin[:paths].each do |path| 
-            local_paths << "lib/sass_modules/#{path}"
+          plugin[:paths].each do |path|
+            load_paths << "lib/sass_modules/#{path}"
           end
         end
       end
@@ -27,12 +27,12 @@ module SassMeisterUtilities
     Compass.configuration.asset_cache_buster { nil }
 
     Compass.sass_engine_options[:load_paths].each do |path|
-      Sass.load_paths << path
+      load_paths << path
     end
 
-    local_paths.each do |path|
-      Sass.load_paths << path
-    end
+    load_paths.uniq!
+
+    Sass.load_paths.concat load_paths
   end
 
 
