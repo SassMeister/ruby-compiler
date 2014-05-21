@@ -39,7 +39,9 @@ module SassMeisterUtilities
       Sass.load_paths << path
     end
 
-    Sass.load_paths.uniq!
+    Sass.load_paths.uniq!.each do |path|
+      log_strings << "Path: #{path}"
+    end
 
     log = Logger.new(STDOUT)
     log.info(log_strings.join("\n"))
