@@ -45,6 +45,8 @@ module SassMeisterUtilities
       log_strings << "Path: #{path}"
     end
 
+    log_strings << "Gems: #{Gem.loaded_specs.keys.join("\n - ")}"
+
     log = Logger.new(STDOUT)
     log.info(log_strings.join("\n"))
   end
