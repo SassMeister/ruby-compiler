@@ -42,8 +42,9 @@ task "update" do
 
   plugins.sort.each do |plugin, info|
     if info[:gem]
-      version = stdout.scan(/#{info[:gem]} (.+)/)[0][0].to_s
-      homepage = Gem.loaded_specs[info[:gem]].homepage
+      gem = Gem.loaded_specs[info[:gem]]
+      version = gem.version.to_s
+      homepage = gem.homepage
       extensions[plugin] = {gem: info[:gem]}
     else
       version = `bower info #{info[:bower]} version -jq`.chomp!
