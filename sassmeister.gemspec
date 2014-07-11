@@ -20,5 +20,8 @@ Gem::Specification.new do |s|
 
   # Gem Bookkeeping
   s.rubygems_version = %q{1.3.6}
+  s.add_dependency("dalli", ["~> 2.6.4"])
+  s.add_dependency("memcachier", ["~> 0.0.2"])
+  s.add_dependency("rack-cache", ["~> 1.2"])
 end
 

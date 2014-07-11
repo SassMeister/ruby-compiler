@@ -4,6 +4,7 @@ ruby '2.0.0'
 gem 'rack-contrib', :git => 'git://github.com/rack/rack-contrib.git'
 gem 'sinatra'
 gem 'unicorn'
+gem 'rack-cache'
 
 # The host app should specify its own versions of Sass and Compass
 # gem 'sass'

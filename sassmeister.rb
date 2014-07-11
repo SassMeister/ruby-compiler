@@ -73,7 +73,9 @@ class SassMeisterApp < Sinatra::Base
     }.to_json.to_s
   end
 
-  get '/extensions' do
+  get '/extensions' do    
+    last_modified app_last_modified.httpdate
+
     content_type 'application/json'
 
     list = plugins.merge(plugins) do |plugin, info|

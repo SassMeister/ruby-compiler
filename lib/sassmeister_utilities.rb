@@ -7,6 +7,11 @@ module SassMeisterUtilities
     @plugins ||= YAML.load_file("config/extensions.yml")
   end
 
+  def app_last_modified
+    return @mtime ||= File.mtime(__FILE__) if settings.environment == :production
+
+    Time.now
+  end
 
   def require_plugins(sass)
     load_paths = ["lib/sass_modules/"]
