@@ -73,7 +73,9 @@ class SassMeisterApp < Sinatra::Base
     }.to_json.to_s
   end
 
-  get '/extensions' do    
+  get '/extensions' do
+    headers 'Access-Control-Allow-Origin' => origin if origin
+
     last_modified app_last_modified.httpdate
 
     cache_control :public, max_age: 2592000 # 30 days, in seconds
