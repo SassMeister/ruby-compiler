@@ -76,6 +76,8 @@ class SassMeisterApp < Sinatra::Base
   get '/extensions' do    
     last_modified app_last_modified.httpdate
 
+    cache_control :public, max_age: 2592000 # 30 days, in seconds
+
     content_type 'application/json'
 
     list = plugins.merge(plugins) do |plugin, info|
