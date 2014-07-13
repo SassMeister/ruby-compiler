@@ -10,6 +10,7 @@ require 'sinatra/base'
 require 'sassmeister_utilities'
 require 'yaml'
 require 'benchmark'
+require 'json'
 
 class SassMeisterApp < Sinatra::Base
   helpers SassMeisterUtilities

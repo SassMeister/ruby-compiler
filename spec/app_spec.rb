@@ -42,23 +42,23 @@ class AppTest < MiniTest::Spec
 
     describe "POST /compile" do
       before do
-        post '/compile', {input: "$color: #f00;\n\n.box {\n  background: $color;\n}", syntax: "scss", output_style: "compact"}
+        post '/compile', {input: "$size: 12px * 2;\n\n.box {\n  font-size: $size;\n}", syntax: "scss", output_style: "compact"}
       end
 
       it "responds with a JSON object containing compiled CSS" do
         json = JSON.parse(last_response.body)
-        assert_equal json['css'].strip, '.box { background: red; }'
+        assert_equal json['css'].strip, '.box { font-size: 24px; }'
       end
     end
 
     describe "POST /convert with SCSS input" do
       before do
-        post '/convert', {input: "$color: #f00;\n\n.box {\n  background: $color;\n}", syntax: "sass", original_syntax: "scss"}
+        post '/convert', {input: "$size: 12px * 2;\n\n.box {\n  font-size: $size;\n}", syntax: "sass", original_syntax: "scss"}
       end
 
       it "responds with a JSON object containing Sass" do
         json = JSON.parse(last_response.body)
-        assert_equal json['css'].strip, "$color: red\n\n.box\n  background: $color"
+        assert_equal json['css'].strip, "$size: 12px * 2\n\n.box\n  font-size: $size"
       end
     end
 
