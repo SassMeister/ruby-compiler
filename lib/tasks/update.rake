@@ -42,9 +42,8 @@ task "update" do
 
   plugins.sort.each do |plugin, info|
     if info[:gem]
-      gem = Gem.loaded_specs[info[:gem]]
-      version = gem.version.to_s
-      homepage = gem.homepage
+      version = stdout.scan(/#{info[:gem]} ([\d\w\._-]+)/)[0][0].to_s
+      homepage = Gem.latest_spec_for(info[:gem]).homepage
       extensions[plugin] = {gem: info[:gem]}
     else
       version = `bower info #{info[:bower]} version -jq`.chomp!
@@ -68,5 +67,4 @@ task "update" do
 
   Rake::Task["test"].invoke
 end
-
 
