@@ -11,15 +11,29 @@ task "update" do
   utilities = Utilities.new
 
   plugins = YAML.load_file("config/plugins.yml")
-  gemfile = File.new('Gemfile').read
+  gemfile = File.read('Gemfile')
+  bowerfile = JSON.parse(File.read('bower.json'))
   new_specs = []
   extensions = {}
+  bundle_command = bower_command = 'update'
 
   plugins.each do |plugin, info|
     if ! gemfile.match(/^\s*gem '#{info[:gem]}'/) && !info[:gem].nil?
       puts "Adding #{info[:gem]} to Gemfile..."
 
       utilities.inject_into_file('Gemfile', "  gem '#{info[:gem]}'\n", :after => "group :application do\n")
+
+      bundle_command = 'install'
+    end
+
+    if ! bowerfile['dependencies'].keys.include?(info[:bower]) && !info[:bower].nil?
+      puts "Adding #{info[:bower]} to bower.json..."
+
+      bowerfile['dependencies'][info[:bower]] = '>=0.0.1'
+
+      utilities.create_file 'bower.json', JSON.pretty_generate(bowerfile), {force: true}
+
+      bower_command = 'install'
     end
 
     unless File.exists? "spec/fixtures/#{plugin}.scss"
@@ -29,10 +43,10 @@ task "update" do
     end
   end
 
-  stdout = `bundle update`
+  stdout = `bundle #{bundle_command}`
   puts stdout
 
-  puts `bower update`
+  puts `bower #{bower_command}`
 
   unless new_specs.empty?
     utilities.say_status('stopped', 'Populate the following new spec fixtures before continuing.', :red)
