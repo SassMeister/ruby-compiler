@@ -18,27 +18,11 @@ class SassMeisterApp < Sinatra::Base
     require 'newrelic_rpm'
   end
 
-  helpers do
-    def origin
-      return request.env["HTTP_ORIGIN"] if origin_allowed? request.env["HTTP_ORIGIN"]
-
-      return false
-    end
-
-    def origin_allowed?(uri)
-      return false if uri.nil?
-
-      return uri.match(/^http:\/\/(.+\.){0,1}sassmeister\.(com|dev|((\d+\.){4}xip\.io))/)
-    end
-  end
-
   before do
     @plugins = plugins
 
     params[:syntax].downcase! unless params[:syntax].nil?
     params[:original_syntax].downcase! unless params[:original_syntax].nil?
-
-    headers 'Access-Control-Allow-Origin' => origin if origin
   end
 
   post '/compile' do
@@ -74,8 +58,6 @@ class SassMeisterApp < Sinatra::Base
   end
 
   get '/extensions' do
-    headers 'Access-Control-Allow-Origin' => origin if origin
-
     last_modified app_last_modified.httpdate
 
     cache_control :public, max_age: 2592000 # 30 days, in seconds
