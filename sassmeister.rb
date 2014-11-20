@@ -34,11 +34,11 @@ class SassMeisterApp < Sinatra::Base
       css = sass_compile(params[:input], params[:syntax], params[:output_style])
     end
 
-    {
+    JSON.generate({
       css: css,
       dependencies: get_build_dependencies(params[:input]),
       time: time.round(3)
-    }.to_json.to_s
+    })
   end
 
   post '/convert' do
@@ -50,11 +50,11 @@ class SassMeisterApp < Sinatra::Base
       css = sass_convert(params[:original_syntax], params[:syntax], params[:input])
     end
 
-    {
+    JSON.generate({
       css: css,
       dependencies: get_build_dependencies(params[:input]),
       time: time.round(3)
-    }.to_json.to_s
+    })
   end
 
   get '/extensions' do
