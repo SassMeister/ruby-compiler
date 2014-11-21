@@ -107,7 +107,7 @@ module SassMeisterUtilities
     require_plugins(sass)
 
     begin
-      Sass::Engine.new(sass.chomp, :syntax => syntax.to_sym, :style => :"#{output_style}", :quiet => true).render
+      Sass::Engine.new(sass.chomp, syntax: syntax.to_sym, style: :"#{output_style}", quiet: true).render
 
     rescue Sass::SyntaxError => e
       status 200
@@ -120,8 +120,8 @@ module SassMeisterUtilities
     return sass if from_syntax == to_syntax
 
     begin
-      Sass::Engine.new(sass, {:from => from_syntax.to_sym, :to => to_syntax.to_sym, :syntax => from_syntax.to_sym}).to_tree.send("to_#{to_syntax}").chomp
     rescue Sass::SyntaxError => e
+      Sass::Engine.new(sass, {from: from_syntax.to_sym, to: to_syntax.to_sym, syntax: from_syntax.to_sym}).to_tree.send("to_#{to_syntax}").chomp
       sass
     end
   end
