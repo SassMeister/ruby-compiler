@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(File.join(Dir.pwd, 'lib'))
 
 require 'rubygems'
 require 'bundler'
-Bundler.setup(:default, :application, ENV['RACK_ENV'])
+Bundler.setup :default, :application, ENV['RACK_ENV']
 
 require 'sinatra/base'
 require 'sassmeister_utilities'
@@ -65,14 +65,14 @@ class SassMeisterApp < Sinatra::Base
     content_type 'application/json'
 
     list = plugins.merge(plugins) do |plugin, info|
-      info.reject {|key, value| key.to_s.match(/gem|bower|paths|fingerprint/)  }
+      info.reject {|key, value| key.to_s.match /gem|bower|paths|fingerprint/ }
     end
 
     list.to_json.to_s
   end
 
   get %r{/([\w]+)/(css|text)} do |path, ext|
-    send_file File.join(settings.public_folder, "#{path}.#{ext}")
+    send_file File.join settings.public_folder, "#{path}.#{ext}"
   end
 
   run! if app_file == $0

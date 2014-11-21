@@ -4,7 +4,7 @@ require 'compass'
 
 module SassMeisterUtilities
   def plugins
-    @plugins ||= YAML.load_file("config/extensions.yml")
+    @plugins ||= YAML.load_file 'config/extensions.yml'
   end
 
   def app_last_modified
@@ -14,7 +14,7 @@ module SassMeisterUtilities
   end
 
   def require_plugins(sass)
-    load_paths = ["lib/sass_modules/"]
+    load_paths = ['lib/sass_modules/']
 
     get_imports_from_sass(sass) do |name, plugin|
       if plugin[:gem]
@@ -42,7 +42,7 @@ module SassMeisterUtilities
 
 
   def get_imports_from_sass(sass)
-    imports = sass.scan(/^\s*@import[\s\"\']*(.+?)[\"\';]*$/)
+    imports = sass.scan /^\s*@import[\s\"\']*(.+?)[\"\';]*$/
     imports.map! {|i| i.first}
 
     plugins.each do |key, plugin|
@@ -55,8 +55,8 @@ module SassMeisterUtilities
 
   def get_build_dependencies(sass)
     dependencies = {
-      'Sass' =>  Gem.loaded_specs["sass"].version.to_s,
-      'Compass' => Gem.loaded_specs["compass"].version.to_s
+      'Sass' =>  Gem.loaded_specs['sass'].version.to_s,
+      'Compass' => Gem.loaded_specs['compass'].version.to_s
     }
 
     get_imports_from_sass(sass) {|name, plugin| dependencies[name] = plugin[:version] }
@@ -66,7 +66,7 @@ module SassMeisterUtilities
 
 
   def unpack_dependencies(sass)
-    frontmatter = sass.slice(/^\/\/ ---\n(?:\/\/ .+\n)*\/\/ ---\n/)
+    frontmatter = sass.slice /^\/\/ ---\n(?:\/\/ .+\n)*\/\/ ---\n/
 
     if frontmatter.nil?
       frontmatter = sass.scan(/^\/\/ ([\w\s]+?) [\(\)v[:alnum:]\.]+?\s*$/).first
@@ -75,7 +75,7 @@ module SassMeisterUtilities
     end
 
     frontmatter.delete_if do |x|
-      ! plugins.key?(x.to_s.strip)
+      ! plugins.key? x.to_s.strip
     end
 
     if frontmatter.empty?
