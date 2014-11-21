@@ -23,10 +23,11 @@ class SassMeisterApp < Sinatra::Base
 
     params[:syntax].downcase! unless params[:syntax].nil?
     params[:original_syntax].downcase! unless params[:original_syntax].nil?
+
+    content_type 'application/json'
   end
 
   post '/compile' do
-    content_type 'application/json'
 
     css = ''
 
@@ -42,7 +43,6 @@ class SassMeisterApp < Sinatra::Base
   end
 
   post '/convert' do
-    content_type 'application/json'
 
     css = ''
 
@@ -62,7 +62,6 @@ class SassMeisterApp < Sinatra::Base
 
     cache_control :public, max_age: 2592000 # 30 days, in seconds
 
-    content_type 'application/json'
 
     list = plugins.merge(plugins) do |plugin, info|
       info.reject {|key, value| key.to_s.match /gem|bower|paths|fingerprint/ }
