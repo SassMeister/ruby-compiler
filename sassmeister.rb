@@ -21,8 +21,12 @@ class SassMeisterApp < Sinatra::Base
   before do
     @plugins = plugins
 
-    params[:syntax].downcase! unless params[:syntax].nil?
-    params[:original_syntax].downcase! unless params[:original_syntax].nil?
+    request.body.rewind
+
+    unless (@payload = request.body.read).empty?
+      @payload = JSON.parse @payload, symbolize_names: true
+      @payload[:syntax].downcase!
+    end
 
     content_type 'application/json'
   end
@@ -32,12 +36,12 @@ class SassMeisterApp < Sinatra::Base
     css = ''
 
     time = Benchmark.realtime do
-      css = sass_compile(params[:input], params[:syntax], params[:output_style])
+      css = sass_compile @payload[:input], @payload[:syntax], @payload[:output_style]
     end
 
     JSON.generate({
       css: css,
-      dependencies: get_build_dependencies(params[:input]),
+      dependencies: get_build_dependencies(@payload[:input]),
       time: time.round(3)
     })
   end
@@ -47,12 +51,12 @@ class SassMeisterApp < Sinatra::Base
     css = ''
 
     time = Benchmark.realtime do
-      css = sass_convert(params[:original_syntax], params[:syntax], params[:input])
+      css = sass_convert @payload[:original_syntax], @payload[:syntax], @payload[:input]
     end
 
     JSON.generate({
       css: css,
-      dependencies: get_build_dependencies(params[:input]),
+      dependencies: get_build_dependencies(@payload[:input]),
       time: time.round(3)
     })
   end
