@@ -13,6 +13,16 @@ module SassMeisterUtilities
     Time.now
   end
 
+
+  def json_response(css, time)
+    JSON.generate({
+      css: css,
+      dependencies: get_build_dependencies(@payload[:input]),
+      time: time.round(3)
+    })
+  end
+
+
   def require_plugins(sass)
     load_paths = ['lib/sass_modules/']
 

@@ -38,11 +38,7 @@ class SassMeisterApp < Sinatra::Base
       css = sass_compile @payload[:input], @payload[:syntax], @payload[:output_style]
     end
 
-    JSON.generate({
-      css: css,
-      dependencies: get_build_dependencies(@payload[:input]),
-      time: time.round(3)
-    })
+    json_response css, time
   end
 
   post '/convert' do
@@ -51,12 +47,8 @@ class SassMeisterApp < Sinatra::Base
     time = Benchmark.realtime do
       css = sass_convert @payload[:original_syntax], @payload[:syntax], @payload[:input]
     end
- 
-    JSON.generate({
-      css: css,
-      dependencies: get_build_dependencies(@payload[:input]),
-      time: time.round(3)
-    })
+
+    json_response css, time
   end
 
   get %r{/extensions(?:\.json)} do
