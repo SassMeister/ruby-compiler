@@ -32,7 +32,6 @@ class SassMeisterApp < Sinatra::Base
   end
 
   post '/compile' do
-
     css = ''
 
     time = Benchmark.realtime do
@@ -47,7 +46,6 @@ class SassMeisterApp < Sinatra::Base
   end
 
   post '/convert' do
-
     css = ''
 
     time = Benchmark.realtime do
@@ -73,9 +71,6 @@ class SassMeisterApp < Sinatra::Base
     list.to_json.to_s
   end
 
-  get %r{/([\w]+)/(css|text)} do |path, ext|
-    send_file File.join settings.public_folder, "#{path}.#{ext}"
-  end
-
   run! if app_file == $0
 end
+
