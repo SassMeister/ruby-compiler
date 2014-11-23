@@ -53,7 +53,7 @@ class SassMeisterApp < Sinatra::Base
     time = Benchmark.realtime do
       css = sass_convert @payload[:original_syntax], @payload[:syntax], @payload[:input]
     end
-
+ 
     JSON.generate({
       css: css,
       dependencies: get_build_dependencies(@payload[:input]),
@@ -61,11 +61,10 @@ class SassMeisterApp < Sinatra::Base
     })
   end
 
-  get '/extensions' do
+  get %r{/extensions(?:\.json)} do
     last_modified app_last_modified.httpdate
 
     cache_control :public, max_age: 2592000 # 30 days, in seconds
-
 
     list = plugins.merge(plugins) do |plugin, info|
       info.reject {|key, value| key.to_s.match /gem|bower|paths|fingerprint/ }
