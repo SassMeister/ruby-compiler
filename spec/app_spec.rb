@@ -11,10 +11,17 @@ class AppTest < MiniTest::Spec
     SassMeisterApp
   end
 
+
   def is_valid?(css)
     css.strip!
     return ! (css.nil? || css.empty? || css.include?('Undefined') || css.include?('Invalid CSS') || css.include?('unreadable') || css.include?('isn\'t a valid CSS value'))
   end
+
+
+  def post_json(url, payload)
+    post url, JSON.generate(payload), {content_type: 'application/json'}
+  end
+
 
   describe "Routes" do
     describe "GET /" do
@@ -42,7 +49,7 @@ class AppTest < MiniTest::Spec
 
     describe "POST /compile" do
       before do
-        post '/compile', {input: "$size: 12px * 2;\n\n.box {\n  font-size: $size;\n}", syntax: "scss", output_style: "compact"}
+        post_json '/compile', {input: "$size: 12px * 2;\n\n.box {\n  font-size: $size;\n}", syntax: 'scss', output_style: 'compact'}
       end
 
       it "responds with a JSON object containing compiled CSS" do
@@ -51,9 +58,10 @@ class AppTest < MiniTest::Spec
       end
     end
 
+
     describe "POST /convert with SCSS input" do
       before do
-        post '/convert', {input: "$size: 12px * 2;\n\n.box {\n  font-size: $size;\n}", syntax: "sass", original_syntax: "scss"}
+        post_json '/convert', {input: "$size: 12px * 2;\n\n.box {\n  font-size: $size;\n}", syntax: 'sass', original_syntax: 'scss'}
       end
 
       it "responds with a JSON object containing Sass" do
@@ -71,7 +79,7 @@ class AppTest < MiniTest::Spec
     plugins.each do |plugin, info|
       describe "Sass input with #{plugin} selected" do
         before do
-          post '/compile', {input: File.read(File.expand_path "spec/fixtures/#{plugin}.scss"), syntax: "scss", output_style: "compact"}
+          post_json '/compile', {input: File.read(File.expand_path "spec/fixtures/#{plugin}.scss"), syntax: 'scss', output_style: 'compact'}
         end
 
         it "should return valid CSS" do
