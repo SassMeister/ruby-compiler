@@ -127,12 +127,13 @@ module SassMeisterUtilities
 
 
   def sass_convert(from_syntax, to_syntax, sass)
-    return sass if from_syntax == to_syntax
+    sass if from_syntax == to_syntax
 
     begin
-    rescue Sass::SyntaxError => e
       Sass::Engine.new(sass, {from: from_syntax.to_sym, to: to_syntax.to_sym, syntax: from_syntax.to_sym}).to_tree.send("to_#{to_syntax}").chomp
-      sass
+
+    rescue Sass::SyntaxError => e
+      sass      
     end
   end
 end
