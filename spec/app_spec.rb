@@ -19,7 +19,7 @@ class AppTest < MiniTest::Spec
 
 
   def post_json(url, payload)
-    post url, JSON.generate(payload), {content_type: 'application/json'}
+    post url, JSON.generate(payload), { "CONTENT_TYPE" => "application/json" }
   end
 
 
@@ -42,7 +42,7 @@ class AppTest < MiniTest::Spec
         get '/extensions.json'
       end
 
-      it 'responds with JSON' do      
+      it 'responds with JSON' do
         last_response.status.must_equal 200
         last_response.header['Content-Type'].must_equal 'application/json'
       end
