@@ -5,7 +5,7 @@ require_relative 'spec_helper.rb'
 class AppTest < MiniTest::Spec
   include Rack::Test::Methods
 
-  register_spec_type(/.+$/, self)
+  register_spec_type /.+$/, self
 
   def app
     SassMeisterApp
@@ -23,11 +23,11 @@ class AppTest < MiniTest::Spec
   end
 
 
-  describe "Routes" do
-    describe "GET /" do
+  describe 'Routes' do
+    describe 'GET /' do
       before do
         # using the rack::test:methods, call into the sinatra app and request the following url
-        get "/"
+        get '/'
       end
 
       it "responds not found" do
@@ -47,13 +47,14 @@ class AppTest < MiniTest::Spec
     #  end
     #end
 
-    describe "POST /compile" do
+
+    describe 'POST /compile' do
       before do
         post_json '/compile', {input: "$size: 12px * 2;\n\n.box {\n  font-size: $size;\n}", syntax: 'scss', output_style: 'compact'}
       end
 
-      it "responds with a JSON object containing compiled CSS" do
-        json = JSON.parse(last_response.body)
+      it 'responds with a JSON object containing compiled CSS' do
+        json = JSON.parse last_response.body
         assert_equal json['css'].strip, '.box { font-size: 24px; }'
       end
     end
@@ -64,16 +65,15 @@ class AppTest < MiniTest::Spec
         post_json '/convert', {input: "$size: 12px * 2;\n\n.box {\n  font-size: $size;\n}", syntax: 'sass', original_syntax: 'scss'}
       end
 
-      it "responds with a JSON object containing Sass" do
-        json = JSON.parse(last_response.body)
+      it 'responds with a JSON object containing Sass' do
+        json = JSON.parse last_response.body
         assert_equal json['css'].strip, "$size: 12px * 2\n\n.box\n  font-size: $size"
       end
     end
-
   end
 
 
-  describe "Extensions" do
+  describe 'Extensions' do
     plugins = YAML.load_file('config/plugins.yml')
 
     plugins.each do |plugin, info|
@@ -82,11 +82,11 @@ class AppTest < MiniTest::Spec
           post_json '/compile', {input: File.read(File.expand_path "spec/fixtures/#{plugin}.scss"), syntax: 'scss', output_style: 'compact'}
         end
 
-        it "should return valid CSS" do
+        it 'should return valid CSS' do
           is_valid?(JSON.parse(last_response.body)['css']).must_equal true
         end
       end
     end
   end
-
 end
+
