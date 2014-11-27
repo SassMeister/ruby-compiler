@@ -26,13 +26,15 @@ class AppTest < MiniTest::Spec
   describe 'Routes' do
     describe 'GET /' do
       before do
-        # using the rack::test:methods, call into the sinatra app and request the following url
         get '/'
       end
 
-      it "responds not found" do
-        # Ensure the request we just made gives us a  status code
-        last_response.status.must_equal 404
+      it 'responds with JSON containing the compiler version' do
+        json = JSON.parse last_response.body
+
+        last_response.status.must_equal 200
+
+        assert_equal json['sass'].strip, Gem.loaded_specs['sass'].version.to_s
       end
     end
 

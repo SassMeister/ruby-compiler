@@ -31,6 +31,15 @@ class SassMeisterApp < Sinatra::Base
     content_type 'application/json'
   end
 
+
+  get '/' do
+    JSON.generate({
+      sass: Gem.loaded_specs['sass'].version,
+      engine: 'Ruby'
+    })
+  end
+
+
   post '/compile' do
     css = ''
 
@@ -41,6 +50,7 @@ class SassMeisterApp < Sinatra::Base
     json_response css, time
   end
 
+
   post '/convert' do
     css = ''
 
@@ -50,6 +60,7 @@ class SassMeisterApp < Sinatra::Base
 
     json_response css, time
   end
+
 
   get %r{/extensions(?:\.json)} do
     last_modified app_last_modified.httpdate
