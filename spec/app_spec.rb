@@ -36,16 +36,17 @@ class AppTest < MiniTest::Spec
       end
     end
 
-    #describe "GET /extensions" do
-    #  before do
-    #    get "/extensions"
-    #  end
 
-    #  it "responds with extension list JSON" do
-    #    file = File.read(File.join(Dir.pwd, 'public', 'extensions.json')).to_s
-    #    assert_equal last_response.body, file
-    #  end
-    #end
+    describe 'GET /extensions' do
+      before do
+        get '/extensions.json'
+      end
+
+      it 'responds with JSON' do      
+        last_response.status.must_equal 200
+        last_response.header['Content-Type'].must_equal 'application/json'
+      end
+    end
 
 
     describe 'POST /compile' do
