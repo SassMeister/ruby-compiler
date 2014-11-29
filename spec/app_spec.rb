@@ -19,7 +19,7 @@ class AppTest < MiniTest::Spec
 
 
   def post_json(url, payload)
-    post url, JSON.generate(payload), { "CONTENT_TYPE" => "application/json" }
+    post url, JSON.generate(payload), { 'CONTENT_TYPE' => 'application/json' }
   end
 
 

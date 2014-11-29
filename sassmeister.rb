@@ -40,6 +40,15 @@ class SassMeisterApp < Sinatra::Base
   end
 
 
+  get %r{/extensions(?:\.json)*} do
+    list = plugins.merge(plugins) do |plugin, info|
+      info.reject {|key, value| key.to_s.match /gem|bower|paths|fingerprint/ }
+    end
+
+    list.to_json.to_s
+  end
+
+
   post '/compile' do
     css = ''
 
@@ -61,18 +70,6 @@ class SassMeisterApp < Sinatra::Base
     json_response css, time
   end
 
-
-  get %r{/extensions(?:\.json)} do
-    last_modified app_last_modified.httpdate
-
-    cache_control :public, max_age: 2592000 # 30 days, in seconds
-
-    list = plugins.merge(plugins) do |plugin, info|
-      info.reject {|key, value| key.to_s.match /gem|bower|paths|fingerprint/ }
-    end
-
-    list.to_json.to_s
-  end
 
   run! if app_file == $0
 end
