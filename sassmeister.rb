@@ -23,12 +23,20 @@ class SassMeisterApp < Sinatra::Base
 
     request.body.rewind
 
-    unless (@payload = request.body.read).empty?
+    if request.post?
+      @payload = request.body.read
       @payload = JSON.parse @payload, symbolize_names: true
-      @payload[:syntax].downcase!
+      @payload[:syntax].downcase! if @payload[:syntax]
+      @payload[:original_syntax].downcase! if @payload[:original_syntax]
     end
 
     content_type 'application/json'
+
+    if request.get?
+      last_modified app_last_modified.httpdate
+
+      cache_control :public, max_age: 2592000 # 30 days, in seconds
+    end
   end
 
 
