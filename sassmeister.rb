@@ -6,13 +6,13 @@ require 'bundler'
 Bundler.setup :default, :application, ENV['RACK_ENV']
 
 require 'sinatra/base'
-require 'sassmeister_utilities'
+require 'sassmeister/utilities'
 require 'yaml'
 require 'benchmark'
 require 'json'
 
 class SassMeisterApp < Sinatra::Base
-  helpers SassMeisterUtilities
+  helpers SassMeister::Utilities
 
   configure :production do
     require 'newrelic_rpm'
