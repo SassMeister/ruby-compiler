@@ -49,11 +49,7 @@ class SassMeisterApp < Sinatra::Base
 
 
   get %r{/extensions(?:\.json)*} do
-    list = plugins.merge(plugins) do |plugin, info|
-      info.reject {|key, value| key.to_s.match /gem|bower|paths|fingerprint/ }
-    end
-
-    list.to_json.to_s
+    extension_list.to_json.to_s
   end
 
 

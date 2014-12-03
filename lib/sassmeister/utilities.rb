@@ -9,6 +9,15 @@ module SassMeister
     end
 
 
+    def extension_list
+      @list ||= begin
+        plugins.merge(plugins) do |plugin, info|
+          info.reject {|key, value| key.to_s.match /gem|bower|paths|fingerprint/ }
+        end
+      end
+    end
+
+
     def app_last_modified
       return @mtime ||= File.mtime(__FILE__) if settings.environment == :production
 
