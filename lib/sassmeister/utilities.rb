@@ -1,6 +1,7 @@
 require 'yaml'
 require 'sass'
 require 'compass'
+require 'sassmeister/redis'
 
 module SassMeister
   module Utilities
@@ -146,6 +147,22 @@ module SassMeister
       rescue Sass::SyntaxError => e
         sass
       end
+    end
+
+
+    def set_metadata
+      version = Gem.loaded_specs['sass'].version.to_s
+
+      compiler = {
+        sass: version,
+        engine: 'Ruby'
+      }
+      
+      compilers = SassMeister::Redis.new 'compilers'
+      compilers.merge!({version[0..2].to_sym => compiler})
+
+      extensions = SassMeister::Redis.new 'extensions'
+      extensions.merge! extension_list
     end
   end
 end
