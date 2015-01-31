@@ -36,7 +36,7 @@ module SassMeister
 
 
     def require_plugins(sass)
-      load_paths = ['lib/sass_modules/']
+      load_paths = ['lib/sass_modules/', 'lib/sass_modules/vendor/']
 
       get_imports_from_sass(sass) do |name, plugin|
         if plugin[:gem]
@@ -45,7 +45,7 @@ module SassMeister
         elsif plugin[:bower]
           if plugin[:paths] && plugin[:paths].any?
             plugin[:paths].each do |path|
-              load_paths << "lib/sass_modules/#{path}"
+              load_paths << "lib/sass_modules/vendor/#{path}"
             end
           end
         end

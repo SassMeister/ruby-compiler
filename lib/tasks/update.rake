@@ -67,7 +67,7 @@ task "update" do
       homepage.gsub!(/"/, '') unless homepage.nil?
 
       if version.nil?
-        version = JSON.parse(File.read("lib/sass_modules/#{info[:bower]}/.bower.json"))["_release"]
+        version = JSON.parse(File.read("lib/sass_modules/vendor/#{info[:bower]}/.bower.json"))["_release"]
       end
 
       extensions[plugin] = {bower: info[:bower], paths: info[:paths]}
