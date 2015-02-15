@@ -73,7 +73,7 @@ task "update" do
       extensions[plugin] = {bower: info[:bower], paths: info[:paths]}
     end
 
-    extensions[plugin].merge!({version: version, import: info[:import], fingerprint: info[:fingerprint], homepage: homepage})
+    extensions[plugin].merge!({version: version, import: (info[:import] || info[:imports]), fingerprint: info[:fingerprint], homepage: homepage})
 
   end
 
