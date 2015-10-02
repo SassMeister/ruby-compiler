@@ -9,6 +9,8 @@ GEM
   remote: http://rubygems.org/
   specs:
     coderay (1.1.0)
+    fakeredis (0.5.0)
+      redis (~> 3.0)
     kgio (2.9.2)
     method_source (0.8.2)
     newrelic_rpm (3.8.0.218)
@@ -20,14 +22,13 @@ GEM
       pry (~> 0.9)
       slop (~> 3.0)
     rack (1.5.2)
-    rack-cache (1.2)
-      rack (>= 0.4)
     rack-protection (1.5.3)
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
     raindrops (0.13.0)
     rake (10.3.1)
+    redis (3.2.1)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -44,12 +45,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  fakeredis
   newrelic_rpm
   pry-remote
-  rack-cache
   rack-contrib!
   rack-test
   rake
+  redis
   sinatra
   thor
   unicorn
