@@ -29,7 +29,7 @@ task "update" do
     if ! bowerfile['dependencies'].keys.include?(info[:bower]) && !info[:bower].nil?
       puts "Adding #{info[:bower]} to bower.json..."
 
-      bowerfile['dependencies'][info[:bower]] = '>=0.0.1'
+      bowerfile['dependencies'][info[:bower]] = info[:version] || '*'
 
       utilities.create_file 'bower.json', JSON.pretty_generate(bowerfile), {force: true}
 
@@ -60,10 +60,12 @@ task "update" do
       homepage = Gem.latest_spec_for(info[:gem]).homepage
       extensions[plugin] = {gem: info[:gem]}
     else
-      version = `bower info #{info[:bower]} version -jq`.chomp!
+      package = info[:version] && info[:version].match('/') ? info[:version] : info[:bower]
+
+      version = `bower info #{package} version -joq`.chomp!
       version.gsub!(/"/, '') unless version.nil?
 
-      homepage = `bower info #{info[:bower]} homepage -jq`.chomp!
+      homepage = `bower info #{package} homepage -joq`.chomp!
       homepage.gsub!(/"/, '') unless homepage.nil?
 
       if version.nil?
