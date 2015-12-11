@@ -1,6 +1,5 @@
 require 'yaml'
 require 'sass'
-require 'compass'
 require 'sassmeister/redis'
 
 module SassMeister
@@ -51,12 +50,6 @@ module SassMeister
         end
       end
 
-      Compass.configuration.asset_cache_buster { nil }
-
-      Compass.sass_engine_options[:load_paths].each do |path|
-        load_paths << path
-      end
-
       load_paths.uniq!
 
       Sass.load_paths.concat load_paths
@@ -77,8 +70,7 @@ module SassMeister
 
     def get_build_dependencies(sass)
       dependencies = {
-        'Sass' =>  Gem.loaded_specs['sass'].version.to_s,
-        'Compass' => Gem.loaded_specs['compass'].version.to_s
+        'Sass' =>  Gem.loaded_specs['sass'].version.to_s
       }
 
       get_imports_from_sass(sass) {|name, plugin| dependencies[name] = plugin[:version] }
