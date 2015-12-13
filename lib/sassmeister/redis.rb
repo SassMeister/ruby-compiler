@@ -1,4 +1,5 @@
 require 'redis'
+require 'uri'
 
 module SassMeister
   class RedisConnection
@@ -19,6 +20,8 @@ module SassMeister
     end
 
     def merge!(incoming)
+      return unless @value
+
       if incoming.is_a? String
         incoming = JSON.parse(incoming, symbolize_names: true) rescue incoming
       end
@@ -29,8 +32,12 @@ module SassMeister
     end
 
     def get
-      value = RedisConnection.connect.get @key
-      @value = value ? (JSON.parse(value, symbolize_names: true) rescue value) : {}
+      begin
+        value = RedisConnection.connect.get @key
+        @value = value ? (JSON.parse(value, symbolize_names: true) rescue value) : {}
+      rescue
+        @value = false
+      end
     end
 
     def set(value = @value)
