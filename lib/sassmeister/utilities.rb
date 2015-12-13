@@ -50,6 +50,14 @@ module SassMeister
         end
       end
 
+      if defined? Compass
+        Compass.configuration.asset_cache_buster { nil }
+
+        Compass.sass_engine_options[:load_paths].each do |path|
+          load_paths << path
+        end
+      end
+
       load_paths.uniq!
 
       Sass.load_paths.concat load_paths
@@ -72,6 +80,10 @@ module SassMeister
       dependencies = {
         'Sass' =>  Gem.loaded_specs['sass'].version.to_s
       }
+
+      if defined? Compass
+        dependencies['Compass'] = Gem.loaded_specs['compass'].version.to_s
+      end
 
       get_imports_from_sass(sass) {|name, plugin| dependencies[name] = plugin[:version] }
 
