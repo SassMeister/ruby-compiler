@@ -1,16 +1,10 @@
-GIT
-  remote: git://github.com/rack/rack-contrib.git
-  revision: 6ff3ca2b2d988911ca52a2712f6a7da5e064aa27
-  specs:
-    rack-contrib (1.2.0)
-      rack (>= 0.9.1)
-
 GEM
   remote: http://rubygems.org/
   specs:
     coderay (1.1.0)
     fakeredis (0.5.0)
       redis (~> 3.0)
+    git-version-bump (0.15.1)
     kgio (2.9.2)
     method_source (0.8.2)
     newrelic_rpm (3.8.0.218)
@@ -22,6 +16,9 @@ GEM
       pry (~> 0.9)
       slop (~> 3.0)
     rack (1.5.2)
+    rack-contrib (1.4.0)
+      git-version-bump (~> 0.15)
+      rack (~> 1.4)
     rack-protection (1.5.3)
       rack
     rack-test (0.6.2)
@@ -48,10 +45,13 @@ DEPENDENCIES
   fakeredis
   newrelic_rpm
   pry-remote
-  rack-contrib!
+  rack-contrib (~> 1.4.0)
   rack-test
   rake
   redis
   sinatra
   thor
   unicorn
+
+BUNDLED WITH
+   1.11.2

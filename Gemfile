@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
-ruby '2.0.0'
+ruby '2.3.0'
 
-gem 'rack-contrib', :git => 'git://github.com/rack/rack-contrib.git'
+gem 'rack-contrib', '~> 1.4.0'
 gem 'sinatra'
 gem 'unicorn'
 
