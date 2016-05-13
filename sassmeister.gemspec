@@ -2,8 +2,8 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   # Release Specific Information
-  s.version     = '0.0.1'
-  s.date = "2014-05-06"
+  s.version     = '0.0.2'
+  s.date = "2016-05-12"
 
   # Gem Details
   s.name = "sassmeister"
@@ -22,6 +22,6 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.6}
   s.add_dependency("dalli", ["~> 2.6.4"])
   s.add_dependency("memcachier", ["~> 0.0.2"])
-  s.add_dependency("rack-cache", ["~> 1.2"])
+  s.add_dependency("rack-cache", ["~> 1.4"])
 end
 
