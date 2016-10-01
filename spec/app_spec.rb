@@ -5,7 +5,7 @@ require_relative 'spec_helper.rb'
 class AppTest < MiniTest::Spec
   include Rack::Test::Methods
 
-  register_spec_type /.+$/, self
+  register_spec_type(/.+$/, self)
 
   def app
     SassMeisterApp

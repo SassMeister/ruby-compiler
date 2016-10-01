@@ -2,8 +2,8 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   # Release Specific Information
-  s.version     = '0.0.2'
-  s.date = "2016-05-12"
+  s.version     = '0.0.3'
+  s.date = "2016-10-01"
 
   # Gem Details
   s.name = "sassmeister"
