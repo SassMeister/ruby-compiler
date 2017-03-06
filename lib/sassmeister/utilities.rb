@@ -12,7 +12,7 @@ module SassMeister
     def extension_list
       @list ||= begin
         plugins.merge(plugins) do |plugin, info|
-          info.reject {|key, value| key.to_s.match /gem|bower|paths|fingerprint/ }
+          info.reject {|key, value| key.to_s.match(/gem|bower|paths|fingerprint/)}
         end
       end
     end
@@ -65,7 +65,7 @@ module SassMeister
 
 
     def get_imports_from_sass(sass)
-      imports = sass.scan /^\s*@import[\s\"\']*(.+?)[\"\';]*$/
+      imports = sass.scan(/^\s*@import[\s\"\']*(.+?)[\"\';]*$/)
       imports.map! {|i| i.first}
 
       plugins.each do |key, plugin|
@@ -92,10 +92,10 @@ module SassMeister
 
 
     def unpack_dependencies(sass)
-      frontmatter = sass.slice /^\/\/ ---\n(?:\/\/ .+\n)*\/\/ ---\n/
+      frontmatter = sass.slice(/^\/\/ ---\n(?:\/\/ .+\n)*\/\/ ---\n/)
 
       if frontmatter.nil?
-        frontmatter = sass.scan(/^\/\/ ([\w\s]+?) [\(\)v[:alnum:]\.]+?\s*$/).first
+        frontmatter = sass.scan(/^\/\/ ([\w\s]+?) v[[:alnum:]\.]+?\s*$/).first
       else
         frontmatter = frontmatter.to_s.gsub(/(\/\/ |---|\(.+$)/, '').strip.split(/\n/)
       end
@@ -148,7 +148,7 @@ module SassMeister
       begin
         Sass::Engine.new(sass, {from: from_syntax.to_sym, to: to_syntax.to_sym, syntax: from_syntax.to_sym}).to_tree.send("to_#{to_syntax}").chomp
 
-      rescue Sass::SyntaxError => e
+      rescue Sass::SyntaxError
         sass
       end
     end

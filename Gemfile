@@ -4,6 +4,7 @@ ruby '2.3.0'
 gem 'rack-contrib', '~> 1.4.0'
 gem 'sinatra'
 gem 'unicorn'
+gem 'minitest'
 
 # The host app should specify its own versions of Sass and Compass
 # gem 'sass'
